@@ -1,0 +1,130 @@
+name: Publish package
+run-name: Publish ${{ inputs.version }} from ${{ inputs.source_sha }}
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Exact reviewed preview or release version
+        required: true
+        type: string
+      source_sha:
+        description: Exact reviewed public main commit
+        required: true
+        type: string
+      source_revision:
+        description: Exact verified upstream revision
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: registry-publish
+  cancel-in-progress: false
+jobs:
+  build:
+    if: ${{ github.repository == 'modernedi/dotnet-sdk' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Require reviewed main before checkout
+        env:
+          EXPECTED_SOURCE_SHA: ${{ inputs.source_sha }}
+        run: test "$GITHUB_SHA" = "$EXPECTED_SOURCE_SHA"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.source_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: node scripts/verify-public-source.mjs
+      - name: Require verified upstream source
+        env:
+          EXPECTED_VERSION: ${{ inputs.version }}
+          EXPECTED_SOURCE_SHA: ${{ inputs.source_sha }}
+          EXPECTED_SOURCE_REVISION: ${{ inputs.source_revision }}
+        run: node scripts/check-release-source.mjs
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet test tests/ModernEdi.Tests/ModernEdi.Tests.csproj --nologo
+      - run: dotnet pack src/ModernEdi/ModernEdi.csproj -c Release --nologo -o dist -p:ContinuousIntegrationBuild=true
+      - run: python scripts/check-package.py check dotnet
+      - name: Test installed NuGet package, not a project reference
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/nuget-installed
+        run: |
+          dotnet restore tests/ModernEdi.Tests/ModernEdi.Tests.csproj -p:UsePackedSdk=true -p:RestoreAdditionalProjectSources="$PWD/dist" --configfile NuGet.Config
+          dotnet test tests/ModernEdi.Tests/ModernEdi.Tests.csproj -p:UsePackedSdk=true --no-restore --nologo
+          dotnet restore examples/ConfigurationPlan/ConfigurationPlan.csproj -p:UsePackedSdk=true --source "$PWD/dist"
+          dotnet run --project examples/ConfigurationPlan/ConfigurationPlan.csproj -p:UsePackedSdk=true --no-restore -- --package-smoke
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: package
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: nuget-production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Require reviewed main before checkout
+        env:
+          EXPECTED_SOURCE_SHA: ${{ inputs.source_sha }}
+        run: test "$GITHUB_SHA" = "$EXPECTED_SOURCE_SHA"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.source_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: node scripts/verify-public-source.mjs
+      - name: Require verified upstream source
+        env:
+          EXPECTED_VERSION: ${{ inputs.version }}
+          EXPECTED_SOURCE_SHA: ${{ inputs.source_sha }}
+          EXPECTED_SOURCE_REVISION: ${{ inputs.source_revision }}
+        run: node scripts/check-release-source.mjs
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: package
+          path: dist/
+      - name: Validate artifacts, deployed contract, and unused version before one upload
+        run: python scripts/check-package.py preflight dotnet
+      - name: Require configured NuGet maintainer identity
+        env:
+          NUGET_USER: ${{ vars.NUGET_USER }}
+        run: test -n "$NUGET_USER"
+      - uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841
+        id: login
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Upload once using the short-lived NuGet credential
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: dotnet nuget push dist/ModernEdi.*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
+      - run: python scripts/check-package.py registry dotnet
+      - name: Fresh registry installation and full offline contract suite
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/nuget-registry
+        run: |
+          dotnet nuget verify registry/*.nupkg --all
+          dotnet restore tests/ModernEdi.Tests/ModernEdi.Tests.csproj -p:UsePackedSdk=true --configfile NuGet.Config --no-cache
+          dotnet test tests/ModernEdi.Tests/ModernEdi.Tests.csproj -p:UsePackedSdk=true --no-restore --nologo

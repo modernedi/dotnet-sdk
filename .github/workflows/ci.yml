@@ -1,0 +1,38 @@
+name: Verify package
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: node scripts/verify-public-source.mjs
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet test tests/ModernEdi.Tests/ModernEdi.Tests.csproj --nologo
+      - run: dotnet pack src/ModernEdi/ModernEdi.csproj -c Release --nologo -o dist -p:ContinuousIntegrationBuild=true
+      - run: python scripts/check-package.py check dotnet
+      - name: Test installed NuGet package, not a project reference
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/nuget-installed
+        run: |
+          dotnet restore tests/ModernEdi.Tests/ModernEdi.Tests.csproj -p:UsePackedSdk=true -p:RestoreAdditionalProjectSources="$PWD/dist" --configfile NuGet.Config
+          dotnet test tests/ModernEdi.Tests/ModernEdi.Tests.csproj -p:UsePackedSdk=true --no-restore --nologo
+          dotnet restore examples/ConfigurationPlan/ConfigurationPlan.csproj -p:UsePackedSdk=true --source "$PWD/dist"
+          dotnet run --project examples/ConfigurationPlan/ConfigurationPlan.csproj -p:UsePackedSdk=true --no-restore -- --package-smoke
