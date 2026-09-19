@@ -4,10 +4,10 @@ A server-side C# client for the [ModernEDI Integration API](https://www.moderned
 It targets .NET 8 and newer, uses `HttpClient` and `System.Text.Json`, and has no external runtime
 package dependencies.
 
-**Preview 0.1.0:** the API may evolve before 1.0. Install the official package from NuGet:
+**Preview 0.2.0:** the API may evolve before 1.0. Install the official package from NuGet:
 
 ```sh
-dotnet add package ModernEdi --version 0.1.0
+dotnet add package ModernEdi --version 0.2.0
 ```
 
 ## Get started
@@ -113,6 +113,27 @@ another attempt. `RequestOptions` carries per-call headers and timeout overrides
 `Pagination.CursorAsync` takes page-loading, item, and next-cursor functions. It preserves opaque
 cursors, detects cycles, honors cancellation, and defaults to a 1,000-page maximum. Repeat all
 filters on every page and lower `maxPages` to bound your workflow.
+
+Use `Pagination.MappedOutputsAsync` for the lease-acquiring mapped-output queue:
+
+```csharp
+await foreach (var output in Pagination.MappedOutputsAsync(
+    (cursor, token) => client.MappedOutputs.PollMappedOutputsAsync(
+        cursor: cursor, environment: "test", cancellationToken: token), maxPolls: 20))
+{
+    // Durably save/deduplicate output.Id, then acknowledge its latest ReceiptHandle.
+    Console.WriteLine(output.Id);
+}
+```
+
+Repeated cursors are valid for queue polls; empty pages with a cursor continue the scan.
+The helper stops at the end of the scan or `maxPolls` (default 1,000) and honors cancellation.
+It does not acknowledge, deduplicate, or continuously watch. Queue polls are never
+automatically retried because a lost response can already have acquired leases; those
+outputs become available again after the visibility timeout. Single-output acknowledgment
+details are under `response.Data.Acknowledgment`, not duplicated at the top level.
+Conditional configuration export returns status `304` with `Data == null` and the ETag
+when unchanged; this is a normal result, not an exception.
 
 ## Webhooks
 

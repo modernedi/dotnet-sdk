@@ -132,7 +132,8 @@ public sealed partial class ModernEdiClient : IDisposable
         foreach (var pair in headers) if (pair.Value is not null) SetHeader(requestHeaders, pair.Key, Scalar(pair.Value));
         if (body is not null && requestHeaders.TryGetValue("Content-Type", out var contentType) && contentType != body.ContentType)
             throw new ArgumentException("Content-Type must match RequestBody.ContentType.");
-        var safe = method is "GET" or "HEAD" or "OPTIONS" || method == "POST" && path == "/v1/configuration/plan" ||
+        var safe = (method is "GET" or "HEAD" or "OPTIONS") && path != "/v1/mapped-outputs" ||
+            method == "POST" && path == "/v1/configuration/plan" ||
             (method is "PUT" or "DELETE") && path == "/v1/integration/transactions/{messageId}/{transactionKey}/watch" ||
             headers.Keys.Any(name => name.Equals("Idempotency-Key", StringComparison.OrdinalIgnoreCase)) &&
             requestHeaders.TryGetValue("Idempotency-Key", out var key) && !string.IsNullOrWhiteSpace(key);

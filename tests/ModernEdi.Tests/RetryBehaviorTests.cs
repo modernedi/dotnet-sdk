@@ -38,11 +38,16 @@ public class RetryBehaviorTests
         var key = row.TryGetProperty("idempotencyKey", out var keyValue) ? keyValue.GetString() : null;
         var parameters = request.GetProperty("parameters");
         int? status = null;
+        ApiResponse<ModernEdi.Model.ConfigurationExportResponse>? export = null;
         Exception? failure = null;
         try
         {
             status = operationId switch {
                 "getIntegrationUsage" => (await client.Account.GetIntegrationUsageAsync(options: options)).StatusCode,
+                "exportIntegrationConfiguration" => (export = await client.ConfigurationAsCode.ExportIntegrationConfigurationAsync(
+                    ifNoneMatch: parameters.GetProperty("ifNoneMatch").GetString(), options: options)).StatusCode,
+                "pollMappedOutputs" => (await client.MappedOutputs.PollMappedOutputsAsync(
+                    environment: parameters.GetProperty("environment").GetString(), options: options)).StatusCode,
                 "planIntegrationConfiguration" => (await client.ConfigurationAsCode.PlanIntegrationConfigurationAsync(
                     WireJson.Deserialize<ModernEdi.Model.ConfigurationPlanRequest>(request.GetProperty("body").GetRawText())!, options: options)).StatusCode,
                 "testMappedOutputWebhook" => (await client.MappedOutputs.TestMappedOutputWebhookAsync(parameters.GetProperty("partnerId").GetInt32(), options: options)).StatusCode,
@@ -82,6 +87,10 @@ public class RetryBehaviorTests
             Assert.Equal(row.GetProperty("status").GetInt32(), error.StatusCode);
             Assert.Equal(row.TryGetProperty("retryAfter", out var after) ? after.GetString() : null, error.RetryAfter);
         }
-        else { Assert.Null(failure); Assert.Equal(row.GetProperty("status").GetInt32(), status); }
+        else {
+            Assert.Null(failure); Assert.Equal(row.GetProperty("status").GetInt32(), status);
+            if (row.TryGetProperty("emptyBody", out _)) { Assert.NotNull(export); Assert.Null(export.Data); Assert.True(export.RawBody.IsEmpty); }
+            if (row.TryGetProperty("etag", out var etag)) Assert.Equal(etag.GetString(), export?.ETag);
+        }
     }
 }

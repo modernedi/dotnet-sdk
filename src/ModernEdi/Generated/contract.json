@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.35.0",
   "generatorVersion": "7.24.0",
-  "bundledSpecificationSha256": "8d5319f4113de990f766c8276031f9b2563c925563e69fdb3257ac7b90b4026b",
+  "bundledSpecificationSha256": "db002ecff1a918950d9cce186201b3a3cea9a17a1d89b0fe4b35588cf77a69d4",
   "operations": [
     {
       "operationId": "acknowledgeMappedOutput",
@@ -491,7 +491,7 @@
     "Model/IntegrationPartnerX12.cs": "b451e88929605381128a36606e982281bcad548d767a2fc482de2fe333721b03",
     "Model/MappedOutputAcknowledgment.cs": "35292cac1107815d23019b8bc3c77cc73b9d16921babb10750ee3c2e6d6db6bf",
     "Model/MappedOutputAckRequest.cs": "a214410f2357ed8758a3d1344be9bf579fc84dbc9eb506f80f66adc87e31c955",
-    "Model/MappedOutputAckResponse.cs": "c884db0ec7aff746651b259eb2e0fb168d5958d04eceda6e7a4bc84bb6145614",
+    "Model/MappedOutputAckResponse.cs": "3613403c08cc650d0c53bac9086ac19edf1d4d4c0c7da1fae58e5c45493a401b",
     "Model/MappedOutputBulkAckRequest.cs": "7af02e1da04eef0c5183181c5a5ed9c6d2dd9ed35f121fb779b072254f9d9725",
     "Model/MappedOutputBulkAckRequestAcksInner.cs": "dc8025a5ed23bde0f21d1ab7575751d20c5d8cceb31ae2c4fc66124ff90a0b32",
     "Model/MappedOutputBulkAckResponse.cs": "7894f333a8907b3107bf41bdcb809731bd0c0d563cdae83ba588d4d5aab77c1e",

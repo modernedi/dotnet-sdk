@@ -28,27 +28,6 @@ public sealed class MappedOutputAckResponse
     [JsonRequired]
     public MappedOutputAcknowledgment Acknowledgment { get; set; } = default!;
 
-    /// <summary>Mapped output id that was marked received.</summary>
-    [JsonPropertyName("id")]
-    [JsonRequired]
-    public string Id { get; set; } = default!;
-
-    /// <summary>Original inbound AS2 message id for the mapped output.</summary>
-    [JsonPropertyName("messageId")]
-    [JsonRequired]
-    public string MessageId { get; set; } = default!;
-
-    /// <summary>Unique mapped-output key inside the transaction.</summary>
-    [JsonPropertyName("mappedOutputKey")]
-    [JsonRequired]
-    public string MappedOutputKey { get; set; } = default!;
-
-    /// <summary>UTC RFC 3339 instant with exactly nine fractional digits and a trailing &#x60;Z&#x60;, or &#x60;null&#x60;.</summary>
-    [JsonPropertyName("ackedAt")]
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public Optional<string?> AckedAt { get; set; }
-
     /// <summary>Unrecognized response fields, preserved on re-serialization.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalProperties { get; set; }
