@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.35.0",
   "generatorVersion": "7.24.0",
-  "bundledSpecificationSha256": "db002ecff1a918950d9cce186201b3a3cea9a17a1d89b0fe4b35588cf77a69d4",
+  "bundledSpecificationSha256": "374d78f01b34be657d66b8dd8dbde91079c280f15b002ff39a019660771cbeec",
   "operations": [
     {
       "operationId": "acknowledgeMappedOutput",
@@ -698,7 +698,7 @@
     "Model/UsagePartnerBreakdown.cs": "cc7ada4d48ecfa7811314d08b0faa3b1bc0457b4c96301f508c73529094ca3a4",
     "Model/UsageResponse.cs": "0ab322e75f25c01693e423f590bacbfd0e9e30af11c1c4f262a9577984001be6",
     "Model/UsageSignals.cs": "44ad9819cf0463e712f4099f5d56b800193ccc120885b7fb9f646bc39364066e",
-    "Model/UsageSnapshot.cs": "3ae3590de02a8370cd16266681317aeccd24a18ba55a98952e7c7835d963c97d",
+    "Model/UsageSnapshot.cs": "a3cc4ae1ba4492e426eb02102a32d70cb310f8fce1fe07448950a54f4a88faaa",
     "Model/WorkspaceEndpoint.cs": "c17dace06c1a75a272be662e47ff507bde950ea47afaa330fa627f673f90d49f",
     "Model/X12ElementPreview.cs": "cb61282c4f01c2c2fca26eecbaca4535028db75bba04e89ffcb266d86f3e0a8f",
     "Model/X12ElementValidationError.cs": "b4890ea1661050c23ecbbe72ac450638db3f0491351daa8527e579126a271cac",

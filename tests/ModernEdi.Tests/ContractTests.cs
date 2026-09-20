@@ -15,7 +15,8 @@ public class ContractTests
     {
         using var corpus = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "fixtures/cases.json")));
         foreach (var row in corpus.RootElement.GetProperty("cases").EnumerateArray())
-            yield return [row.GetProperty("id").GetString()!, row.GetProperty("schema").GetString()!, row.GetProperty("value").GetRawText()];
+            yield return [row.GetProperty("id").GetString()!, row.GetProperty("schema").GetString()!,
+                row.TryGetProperty("wireJson", out var wireJson) ? wireJson.GetString()! : row.GetProperty("value").GetRawText()];
     }
 
     [Theory, MemberData(nameof(Cases))]

@@ -4,10 +4,10 @@ A server-side C# client for the [ModernEDI Integration API](https://www.moderned
 It targets .NET 8 and newer, uses `HttpClient` and `System.Text.Json`, and has no external runtime
 package dependencies.
 
-**Preview 0.2.0:** the API may evolve before 1.0. Install the official package from NuGet:
+**Preview 0.2.1:** the API may evolve before 1.0. Install the official package from NuGet:
 
 ```sh
-dotnet add package ModernEdi --version 0.2.0
+dotnet add package ModernEdi --version 0.2.1
 ```
 
 ## Get started
