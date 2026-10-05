@@ -26,7 +26,7 @@ public sealed class ConfigurationScenarioBindingRegressionCase
     /// <summary>Ordinary run parameters, resolved and type-checked against this exact definition.</summary>
     [JsonPropertyName("parameters")]
     [JsonRequired]
-    public Object Parameters { get; set; } = default!;
+    public Dictionary<string, Object> Parameters { get; set; } = default!;
 
     /// <summary>Listed attachment order. Repeated step IDs are assigned occurrence 1, 2, and so on. No sorting by business event time occurs.</summary>
     [JsonPropertyName("observations")]

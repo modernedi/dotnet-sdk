@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.36.0",
   "generatorVersion": "7.24.0",
-  "bundledSpecificationSha256": "676c5c93eb83abdfd06986481ef80b4f921a82df9875284540385d244d235a2f",
+  "bundledSpecificationSha256": "755cf1e8ca297977b34fd9ad3bafefff1bb9e16ded18780e1dbd2e9efe42a4e4",
   "operations": [
     {
       "operationId": "acknowledgeMappedOutput",
@@ -406,7 +406,7 @@
     "Model/ConfigurationScenarioBindingFactSource.cs": "e937313e5ef51db244fbbf5ccc1c0b0c48e79b4e3ec86367310023cfdf1eb563",
     "Model/ConfigurationScenarioBindingFactSourceBinding.cs": "6b76380014ed66226edc9b6181088fb975e965e68ef67ec28ee4893a8eb3edc7",
     "Model/ConfigurationScenarioBindingMetadata.cs": "bd67dfffc2b94eeba8afeeb9a16a3703d5a28ab2143c56a354bb8219ba3249d6",
-    "Model/ConfigurationScenarioBindingRegressionCase.cs": "0a69c5f8d9feed34a5781dcb80de96ac0990dd25558f182fccab021875fbf5ab",
+    "Model/ConfigurationScenarioBindingRegressionCase.cs": "9e538dea48f13be43bb3309ba281de80e066095598a04e186fb98fdba0eb2df0",
     "Model/ConfigurationScenarioBindingRegressionExpected.cs": "558f0886c1e3629b3a159142223828854ad1701c4652c4a2c0a869f6d1247fcb",
     "Model/ConfigurationScenarioBindingRegressionExpectedChecksInner.cs": "d5b60ef536b12dc40a2316ff60c26bf1e0c3503bf4fd2f93dedb0a9b4f154689",
     "Model/ConfigurationScenarioBindingRegressionObservation.cs": "733c7f3d9bb3796c7e6af20a1a1d77fc186ca1e2b93b800ff6912fce2b915507",
