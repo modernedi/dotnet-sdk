@@ -68,7 +68,7 @@ public sealed class ConfigurationScenarioCaseResult
     [JsonRequired]
     public string? ActualChecksSha256 { get; set; } = default!;
 
-    /// <summary>Safe diagnostic category, or null when the saved test passed.</summary>
+    /// <summary>Safe diagnostic category, or null when the saved test passed. Fact timeouts and busy/limit errors leave the conversation unevaluated and never satisfy negative expectations. Retry verification; repeated failures may require simplifying the fact expression or contacting support. Raw documents, fact values, and Mapper errors are not included.</summary>
     [JsonPropertyName("diagnosticCode")]
     [JsonRequired]
     public string? DiagnosticCode { get; set; } = default!;

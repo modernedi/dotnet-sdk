@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.36.0",
   "generatorVersion": "7.24.0",
-  "bundledSpecificationSha256": "755cf1e8ca297977b34fd9ad3bafefff1bb9e16ded18780e1dbd2e9efe42a4e4",
+  "bundledSpecificationSha256": "6bf52ed80ac7a03d72570d392aefeb14a69567fb9463e44aecf2aa4a4f7d8833",
   "operations": [
     {
       "operationId": "acknowledgeMappedOutput",
@@ -419,7 +419,7 @@
     "Model/ConfigurationScenarioBindingTarget.cs": "8ca62b5db5d8baa149afa716146d3bee03396be87a4d0092b7a05e87a230e59b",
     "Model/ConfigurationScenarioBindingX12MapperExpressionSource.cs": "e5bae9d500dc4a4600257c9fc8126302bfa2f29590e1fc98780ca3a55fcab2e2",
     "Model/ConfigurationScenarioCaseCheck.cs": "e5d368546d9d22b4164e8ce6124bfeb9f5b342210a7963ed1ed195ff1d76a490",
-    "Model/ConfigurationScenarioCaseResult.cs": "8eba8055cd49c3b494ca37d1f7d79785c116a4a9445032bbadce2371375bacb2",
+    "Model/ConfigurationScenarioCaseResult.cs": "e5f635384cc8935f0c55a33a378e8654fba9914b95aad7428e8e5e44d800f959",
     "Model/ConfigurationScenarioDefinitionActor.cs": "727c3d30647784bdb014e79dcc9d0fa3056507cd7e4838fe306b34a450149ee3",
     "Model/ConfigurationScenarioDefinitionAssertion.cs": "a086166e954057640fcdf54b397bb62d5d34855beba554f0e58f68974687b0af",
     "Model/ConfigurationScenarioDefinitionAssertionOperand.cs": "32b091450ad67e8313cc87ea8890469dcc144775210de2037ff36045511e3fff",
