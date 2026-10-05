@@ -1,4 +1,4 @@
-// Generated from the ModernEDI Integration API 1.35.0. Do not edit.
+// Generated from the ModernEDI Integration API 1.36.0. Do not edit.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -38,6 +38,11 @@ public sealed class ConfigurationVerificationIdentity
     [JsonRequired]
     public List<ConfigurationVerificationMapping> Mappings { get; set; } = default!;
 
+    /// <summary>Desired bindings with saved offline conversation tests. These tests use actual mapping-case documents and the scenario interpreter, without live delivery or acknowledgement evidence.</summary>
+    [JsonPropertyName("scenarioBindings")]
+    [JsonRequired]
+    public List<ConfigurationVerificationScenarioBinding> ScenarioBindings { get; set; } = default!;
+
     /// <summary>Desired mappings without saved cases. A passing suite does not cover these mappings.</summary>
     [JsonPropertyName("untestedMappingCount")]
     [JsonRequired]
@@ -47,6 +52,11 @@ public sealed class ConfigurationVerificationIdentity
     [JsonPropertyName("caseCount")]
     [JsonRequired]
     public int CaseCount { get; set; } = default!;
+
+    /// <summary>Desired scenario bindings without saved conversation tests. Null for historical runs that did not measure conversation coverage.</summary>
+    [JsonPropertyName("untestedScenarioBindingCount")]
+    [JsonRequired]
+    public int? UntestedScenarioBindingCount { get; set; } = default!;
 
     /// <summary>Unrecognized response fields, preserved on re-serialization.</summary>
     [JsonExtensionData]

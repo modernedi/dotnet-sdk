@@ -1,4 +1,4 @@
-// Generated from the ModernEDI Integration API 1.35.0. Do not edit.
+// Generated from the ModernEDI Integration API 1.36.0. Do not edit.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -62,6 +62,12 @@ public sealed class ScenarioGraphStep
     [JsonPropertyName("occurrences")]
     [JsonRequired]
     public List<ScenarioGraphOccurrence> Occurrences { get; set; } = default!;
+
+    /// <summary>Present and true only when the server currently permits explicitly closing this step through advance.closeSteps. Omitted otherwise. Reaching max does not close an explicit stream.</summary>
+    [JsonPropertyName("closable")]
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public Optional<bool> Closable { get; set; }
 
     /// <summary>Unrecognized response fields, preserved on re-serialization.</summary>
     [JsonExtensionData]

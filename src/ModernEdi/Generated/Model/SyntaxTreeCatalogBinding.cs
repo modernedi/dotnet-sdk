@@ -1,4 +1,4 @@
-// Generated from the ModernEDI Integration API 1.35.0. Do not edit.
+// Generated from the ModernEDI Integration API 1.36.0. Do not edit.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ public sealed class SyntaxTreeCatalogBinding
     /// <summary>Version of this catalog-binding metadata contract, used by clients to interpret the immutable grammar identifiers safely.</summary>
     [JsonPropertyName("schemaVersion")]
     [JsonRequired]
-    public string SchemaVersion { get; set; } = default!;
+    public int SchemaVersion { get; set; } = default!;
 
     /// <summary>SHA-256 identity of the complete immutable syntax-tree catalog at approval time. This approval revision can differ from a later active platform catalog when syntaxTreeSha256 proves that the exact grammar for this mapping&#39;s X12 version and transaction set is unchanged. </summary>
     [JsonPropertyName("catalogRevision")]

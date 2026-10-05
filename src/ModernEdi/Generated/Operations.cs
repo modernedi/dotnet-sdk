@@ -80,8 +80,8 @@ public sealed class ScenarioRunsApi
     private readonly ModernEdiClient client;
     internal ScenarioRunsApi(ModernEdiClient client) { this.client = client; }
 
-    /// <summary>Advance adapter work or reevaluate graph deadlines</summary>
-    public Task<ApiResponse<ScenarioRunCommandResponse>> AdvanceScenarioRunAsync(JsonElement body, string runId, string idempotencyKey, string ifMatch, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
+    /// <summary>Advance work, reevaluate deadlines, or explicitly close document collection</summary>
+    public Task<ApiResponse<ScenarioRunCommandResponse>> AdvanceScenarioRunAsync(AdvanceScenarioRunRequest body, string runId, string idempotencyKey, string ifMatch, RequestOptions? options = null, CancellationToken cancellationToken = default) =>
         client.SendAsync<ScenarioRunCommandResponse>("advanceScenarioRun", "POST", "/v1/scenario-runs/{runId}/advance",
             new Dictionary<string, object?> { ["runId"] = runId },
             new Dictionary<string, object?> {  },

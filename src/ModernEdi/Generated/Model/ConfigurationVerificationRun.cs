@@ -1,4 +1,4 @@
-// Generated from the ModernEDI Integration API 1.35.0. Do not edit.
+// Generated from the ModernEDI Integration API 1.36.0. Do not edit.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ public sealed class ConfigurationVerificationRun
     [JsonRequired]
     public string RunId { get; set; } = default!;
 
-    /// <summary>PASSED covers only selected saved cases; it does not establish delivery, partner acceptance or scenario success.</summary>
+    /// <summary>PASSED covers the selected mapping and offline conversation expectations; it does not establish delivery, partner acceptance or a successful live scenario run.</summary>
     [JsonPropertyName("status")]
     [JsonRequired]
     public string Status { get; set; } = default!;
@@ -36,7 +36,7 @@ public sealed class ConfigurationVerificationRun
     /// <summary>Completed case outcomes. Incomplete suites cannot pass.</summary>
     [JsonPropertyName("cases")]
     [JsonRequired]
-    public List<ConfigurationVerificationCaseResult> Cases { get; set; } = default!;
+    public List<ConfigurationVerificationRunCasesInner> Cases { get; set; } = default!;
 
     /// <summary>Whether current workspace, evaluator and catalog still match this result.</summary>
     [JsonPropertyName("freshness")]

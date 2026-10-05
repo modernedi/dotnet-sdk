@@ -1,4 +1,4 @@
-// Generated from the ModernEDI Integration API 1.35.0. Do not edit.
+// Generated from the ModernEDI Integration API 1.36.0. Do not edit.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -32,6 +32,12 @@ public sealed class ConfigurationScenarioBindingSpec
     [JsonPropertyName("steps")]
     [JsonRequired]
     public List<ConfigurationScenarioBindingStepBinding> Steps { get; set; } = default!;
+
+    /// <summary>Optional offline tests for this binding. Each observation references a saved case on the step&#39;s bound runtime mapping. Tests execute proposed maps and the existing graph interpreter without sending EDI or creating live run evidence. Case order is canonicalized by ID; observation order is preserved. Up to 10 cases, 20 observations each, and 64 KiB total.</summary>
+    [JsonPropertyName("regressionCases")]
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public Optional<List<ConfigurationScenarioBindingRegressionCase>> RegressionCases { get; set; }
 
     /// <summary>Unrecognized response fields, preserved on re-serialization.</summary>
     [JsonExtensionData]

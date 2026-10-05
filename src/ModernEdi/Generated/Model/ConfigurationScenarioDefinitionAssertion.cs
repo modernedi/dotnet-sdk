@@ -1,4 +1,4 @@
-// Generated from the ModernEDI Integration API 1.35.0. Do not edit.
+// Generated from the ModernEDI Integration API 1.36.0. Do not edit.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using ModernEdi;
 
 namespace ModernEdi.Model;
 
-/// <summary>A fact rule that must hold for the run to pass. For example, exists can require every 810 invoice to expose invoiceTotal, sum_equal can compare shipped and invoiced totals, and monotonic can require successive 315 status timestamps to move forward. Binary operators require right; unary operators reject it.</summary>
+/// <summary>A fact rule that must hold for the run to pass. sum_equal compares overall totals. keyed_sum_equal instead sums decimal amounts per item key across occurrences, then requires identical keys and per-key totals on both sides. keyed_equal requires identical keys and consistent decimal values per key, including across repeated occurrences (useful for unit prices). Keyed comparisons wait for both steps to close before passing and require keyed_facts operands. Binary operators require right; unary operators reject it.</summary>
 
 public sealed class ConfigurationScenarioDefinitionAssertion
 {
@@ -26,13 +26,13 @@ public sealed class ConfigurationScenarioDefinitionAssertion
     /// <summary></summary>
     [JsonPropertyName("left")]
     [JsonRequired]
-    public ConfigurationScenarioDefinitionValueOperand Left { get; set; } = default!;
+    public ConfigurationScenarioDefinitionAssertionOperand Left { get; set; } = default!;
 
     /// <summary></summary>
     [JsonPropertyName("right")]
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public Optional<ConfigurationScenarioDefinitionValueOperand> Right { get; set; }
+    public Optional<ConfigurationScenarioDefinitionAssertionOperand> Right { get; set; }
 
     /// <summary>Unrecognized response fields, preserved on re-serialization.</summary>
     [JsonExtensionData]

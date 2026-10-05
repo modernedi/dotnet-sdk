@@ -1,4 +1,4 @@
-// Generated from the ModernEDI Integration API 1.35.0. Do not edit.
+// Generated from the ModernEDI Integration API 1.36.0. Do not edit.
 #nullable enable
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ public sealed class ConfigurationVerificationSyntaxTree
     /// <summary>Syntax-tree catalog identity format.</summary>
     [JsonPropertyName("schemaVersion")]
     [JsonRequired]
-    public string SchemaVersion { get; set; } = default!;
+    public int SchemaVersion { get; set; } = default!;
 
     /// <summary>X12 release of the stored grammar.</summary>
     [JsonPropertyName("x12Version")]
